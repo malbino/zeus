@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:param name="root" value="#{request.contextPath}" />
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="#{root}/resources/css/ui.css" rel="stylesheet" type="text/css" />
+        <title>ZEUS</title>
+        <link rel="shortcut icon" href="#{root}/resources/images/favicon.png"/>
+    </h:head>
+
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" style="border-style: none">
+                <h:form>
+                    <p:menubar id="menu" model="#{LoginController.menuModel}" autoDisplay="false">
+                        <f:facet name="options">
+                            <h:panelGrid columns="5">
+                                <h:outputText value="GA: "/>
+                                <p:selectOneMenu  converter="#{GestionAcademicaConverter}">
+                                    <f:selectItems value="#{LoginController.listaGestionesAcademicas()}"/>
+                                </p:selectOneMenu>
+
+                                <h:outputText value="Rol: "/>
+                                <p:selectOneMenu value="#{LoginController.seleccionRol}" converter="#{RolConverter}">
+                                    <f:selectItems value="#{LoginController.listaRoles}"/>
+
+                                    <p:ajax update="menu" listener="#{LoginController.cambiarRol()}"/>
+                                </p:selectOneMenu>
+
+                                <p:splitButton value="#{LoginController.usr.nombre}" icon="ui-icon-person" actionListener="#{LoginController.toHome()}">
+                                    <p:menuitem value="Finalizar sesión" icon="ui-icon-close" actionListener="#{LoginController.logout()}"/>
+                                </p:splitButton>
+                            </h:panelGrid>
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit header="Turno" position="east" size="200" rendered="#{LoginController.turnoCaja != null}">
+                <h:panelGrid id="turno" columns="2">
+                    <h:outputText value="Campus: " style="font-weight: bold"/>
+                    <h:outputText value="#{LoginController.informacion[0]}" style="font-weight: normal"/>
+
+                    <h:outputText value="Caja: " style="font-weight: bold"/>
+                    <h:outputText value="#{LoginController.informacion[1]}" style="font-weight: normal"/>
+
+                    <h:outputText value="Incio: " style="font-weight: bold"/>
+                    <h:outputText value="#{LoginController.informacion[2]}" style="font-weight: normal"/>
+
+                    <h:outputText value="Monto (Bs.): " style="font-weight: bold"/>
+                    <h:outputText value="#{LoginController.informacion[3]}" style="font-weight: bold; font-size: medium"/>
+                </h:panelGrid>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <div id="content" class="center_content">
+                    <ui:insert name="center">
+
+                    </ui:insert>
+                </div>
+            </p:layoutUnit>
+        </p:layout>
+
+        <ui:insert name="dlg">
+
+        </ui:insert>
+    </h:body>
+</html>

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <body>
+
+        <ui:composition template="resources/templates/login.xhtml">
+
+            <ui:define name="center">
+                <p:graphicImage value="/resources/images/zeus.png" styleClass="center_content"/>
+                <h:outputText value="Instituto Tecnológico Infocal Oruro" style="font-size: medium" styleClass="center_content"/>
+
+                <h:form id="login">
+                    <p:panel styleClass="center_content">
+                        <p:graphicImage value="/resources/images/default-user.png" styleClass="center_content"/>
+
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+                        <h:panelGrid id="panelGrid" columns="1">
+                            <p:inputText id="usuario" value="#{LoginController.usuario}" placeholder="Usuario" size="30"/>
+                            <p:password id="password"  value="#{LoginController.contrasena}" placeholder="Contraseña" size="30"/>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton icon="ui-icon-key" actionListener="#{LoginController.login()}" value="Ingresar" update="panelGrid"/>
+
+                            <p:commandLink actionListener="#{LoginController.toOpciones()}">  
+                                <h:outputText value="¿Olvidaste tu contraseña?" />  
+                            </p:commandLink>
+                        </h:panelGrid>
+
+                        <p:separator/>
+
+                        <p:outputPanel style="text-align: right">
+                            <h:outputText value="ZEUS subsede Oruro v1.2.0" style="font-size: smaller"/>
+                        </p:outputPanel>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

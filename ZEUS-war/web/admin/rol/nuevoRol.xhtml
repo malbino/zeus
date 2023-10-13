@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="../../resources/templates/ui.xhtml">
+            <ui:define name="center">
+                <h:form id="nuevoRol">
+                    <p:panel>
+                        <f:facet name="header"> 
+                            <h:outputText style="font-size: medium" value="Nuevo Rol"/> 
+                        </f:facet>
+
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+                        <h:panelGrid id="panelGrid" columns="2" >
+                            <p:outputLabel for="codigo" value="Código:"/> 
+                            <p:inputText id="codigo" value="#{RolController.nuevoRol.codigo}" required="true" requiredMessage="* Código requerido." size="30"/>
+
+                            <p:outputLabel for="nombre" value="Nombre:"/>
+                            <p:inputText id="nombre" value="#{RolController.nuevoRol.nombre}" required="true" requiredMessage="* Nombre requerido." size="30"/>
+
+                            <h:outputLabel for="funcionalidades" value="Privilegios:"/>
+                            <p:selectCheckboxMenu id="funcionalidades" value="#{RolController.nuevoRol.funcionalidades}" converter="#{FuncionalidadConverter}" label="Funcionalidades" filter="true" filterMatchMode="contains" style="vertical-align:middle">  
+                                <f:selectItems value="#{RolController.listaFuncionalidades()}"/>  
+                            </p:selectCheckboxMenu>
+                            
+                            <h:outputLabel for="gestionesAcademicas" value="Gestiones Académicas:"/>
+                            <p:selectCheckboxMenu id="gestionesAcademicas" value="#{RolController.nuevoRol.gestionesAcademicas}" converter="#{GestionAcademicaConverter}" label="Gestiones Académicas" filter="true" filterMatchMode="contains" style="vertical-align:middle">  
+                                <f:selectItems value="#{RolController.listaGestionesAcademicas()}"/>  
+                            </p:selectCheckboxMenu> 
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Aceptar" icon="ui-icon-check" actionListener="#{RolController.crearRol()}" update="panelGrid"/>
+                            <p:commandButton value="Cancelar" icon="ui-icon-cancel" process="@this"  actionListener="#{RolController.toRoles()}"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

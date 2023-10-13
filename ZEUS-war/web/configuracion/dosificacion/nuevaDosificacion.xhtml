@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="../../resources/templates/ui.xhtml">
+            <ui:define name="center">
+                <h:outputScript library="js" name="calendar_es.js" />
+
+                <h:form id="nuevoUsuario">
+                    <p:panel>
+                        <f:facet name="header"> 
+                            <h:outputText style="font-size: medium" value="Nueva Dosificación"/> 
+                        </f:facet>
+
+
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+                        <h:panelGrid id="panelGrid" columns="2" >
+                            <p:outputLabel for="numero_tramite" value="Número de Tramite:"/>
+                            <p:inputText id="numero_tramite" value="#{DosificacionController.nuevaDosificacion.numero_tramite}" required="true" requiredMessage="* Número de Tramite requerido."/>
+                            
+                            <p:outputLabel for="numero_autorizacion1" value="Número de Autorización:"/>
+                            <p:inputText id="numero_autorizacion1" value="#{DosificacionController.numero_autorizacion1}" required="true" requiredMessage="* Número de Autorización requerido."/>
+
+                            <p:outputLabel for="numero_autorizacion2" value="Repita el Número de Autorización:"/>
+                            <p:inputText id="numero_autorizacion2" value="#{DosificacionController.numero_autorizacion2}" required="true" requiredMessage="* Repita el Número de Autorización requerido."/>
+
+                            <p:outputLabel for="flimite_emision1" value="Fecha Limite de Emisión:"/>
+                            <p:calendar id="flimite_emision1" value="#{DosificacionController.flimite_emision1}" locale="es" pattern="dd/MM/yyyy" mask="true" showButtonPanel="true" navigator="true" required="true" requiredMessage="* Fecha Limite de Emisión requerida."/>  
+
+                            <p:outputLabel for="flimite_emision2" value="Repita la Fecha Limite de Emisión:"/>
+                            <p:calendar id="flimite_emision2" value="#{DosificacionController.flimite_emision2}" locale="es" pattern="dd/MM/yyyy" mask="true" showButtonPanel="true" navigator="true" required="true" requiredMessage="* Repita la Fecha Limite de Emisión requerida."/>  
+
+                            <p:outputLabel for="llave_dosificacion1" value="Llave de dosificación:"/>
+                            <p:inputTextarea id="llave_dosificacion1" value="#{DosificacionController.llave_dosificacion1}" required="true" requiredMessage="* Llave de Dosificación requerida." />
+
+                            <p:outputLabel for="llave_dosificacion2" value="Repita la Llave de dosificación:"/>
+                            <p:inputTextarea id="llave_dosificacion2" value="#{DosificacionController.llave_dosificacion2}" required="true" requiredMessage="* Repita la Llave de Dosificación requerida."/>
+
+                            <p:outputLabel for="leyenda_ley453" value="Leyenda Ley 453:"/>
+                            <p:inputTextarea id="leyenda_ley453" value="#{DosificacionController.nuevaDosificacion.leyenda}" required="true" requiredMessage="* Leyenda requerida."/>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Aceptar" icon="ui-icon-check" actionListener="#{DosificacionController.crearDosificacion()}" update="panelGrid"/>
+                            <p:commandButton value="Cancelar" icon="ui-icon-cancel" process="@this"  actionListener="#{DosificacionController.toDosificaciones()}"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

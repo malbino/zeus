@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <body>
+        <ui:composition template="../../resources/templates/ui.xhtml">
+            <ui:define name="center">
+                <h:form>
+                    <p:panel header="Seleccionar Cuotas">
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+
+                        <p:dataTable id="detalles" var="detalle" value="#{FacturaExternaRegularController.listaDetalles}" selection="#{FacturaExternaRegularController.nuevosDetalles}" 
+                                     rowKey="#{detalle.codigo}" emptyMessage="Ningún registro encontrado."  tableStyle="width:auto; min-width:100%">
+                            <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+                            <p:column headerText="Cantidad">
+                                #{detalle.cantidad}
+                            </p:column>
+
+                            <p:column headerText="Código">
+                                #{detalle.codigo}
+                            </p:column>
+                            <p:column headerText="Concepto">
+                                #{detalle.concepto}
+                            </p:column>
+
+                            <p:column headerText="Monto Unitario (Bs.)">
+                                <h:outputText value="#{detalle.unitario}" style="float: right"/>
+                            </p:column>
+
+                            <p:column headerText="Monto Total (Bs.)">
+                                <h:outputText value="#{detalle.total}" style="float: right"/>
+                            </p:column>
+
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column footerText="Total (Bs.): " colspan="4" style="text-align:right"/>
+                                    <p:column footerText="#{FacturaExternaRegularController.montoDetalles()}" style="text-align:right"/>
+                                    <p:column footerText=""/>
+                                </p:row>
+                            </p:columnGroup>
+                        </p:dataTable>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Aceptar" icon="ui-icon-check" actionListener="#{FacturaExternaRegularController.añadirDetalles()}"/>
+                            <p:commandButton value="Cancelar" icon="ui-icon-cancel" process="@this"  actionListener="#{FacturaExternaRegularController.toFacturaExternaRegular()}"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

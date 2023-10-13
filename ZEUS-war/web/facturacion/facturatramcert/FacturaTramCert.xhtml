@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="../../resources/templates/ui.xhtml">
+            <ui:define name="center">
+                <h:outputScript library="js" name="calendar_es.js" />
+
+                <h:form id="form">
+                    <p:panel id="panel">
+                        <f:facet name="header"> 
+                            <h:outputText style="font-size: medium" value="Factura Tram/Cert"/> 
+                        </f:facet>
+
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+                        <p:panel id="inscrito" header="Inscrito">
+                            <h:panelGrid columns="2">
+                                <p:outputLabel for="estudiante" value="Estudiante:"/>
+                                <p:autoComplete id="estudiante" value="#{FacturaTramCertController.seleccionEstudiante}" completeMethod="#{FacturaTramCertController.completarEstudiante}"
+                                                var="estudiante" itemLabel="#{estudiante.toString()}" itemValue="#{estudiante}" converter="#{EstudianteConverter}" forceSelection="true" size="40">
+                                    <p:ajax event="itemSelect" update="carrera, detalle, cliente" listener="#{FacturaTramCertController.actualizar()}"/>
+                                </p:autoComplete>
+
+                                <p:outputLabel for="carrera" value="Carrera:"/>
+                                <p:selectOneMenu id="carrera" value="#{FacturaTramCertController.seleccionCarrera}" converter="#{CarreraConverter}"> 
+                                    <f:selectItem itemLabel="Seleccione uno" itemValue=""/>
+                                    <f:selectItems value="#{FacturaTramCertController.listaCarreras()}" var="carrera" itemLabel="#{carrera.toString()}" itemValue="#{carrera}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                        </p:panel>
+                        
+                        <p:panel header="Detalle">
+                            <p:remoteCommand name="updateDetalle" actionListener="#{FacturaTramCertController.actualizarCambio()}" update="detalle efectivo cambio"/>
+                            <p:dataTable id="detalle" var="detalle" value="#{FacturaTramCertController.nuevosDetalles}" emptyMessage="Ningún registro encontrado."  
+                                         rowKey="#{detalle.codigo}" selection="#{FacturaTramCertController.seleccionDetalle}" selectionMode="single" 
+                                         editable="true" tableStyle="width:auto; min-width:100%">
+                                <p:ajax event="rowEdit" listener="#{FacturaTramCertController.onRowEdit}" oncomplete="updateDetalle()"/>
+
+                                <p:column headerText="Cantidad">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{detalle.cantidad}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{detalle.cantidad}" style="max-width: 30px" label="Cantidad" autocomplete="false">
+                                                <f:validateDoubleRange minimum="1"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>
+
+                                <p:column headerText="Código" >  
+                                    #{detalle.codigo}
+                                </p:column>
+
+                                <p:column headerText="Concepto" >  
+                                    #{detalle.concepto} 
+                                </p:column>
+
+                                <p:column headerText="Monto Unitario (Bs.)">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{detalle.unitario}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{detalle.unitario}" style="max-width: 30px" label="Monto Unitario (Bs.)" autocomplete="false">
+                                                <f:validateDoubleRange minimum="1"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>
+
+                                <p:column headerText="Monto Total (Bs.)">
+                                    <h:outputText value="#{detalle.total}" style="float: right"/>  
+                                </p:column>
+
+                                <p:column>
+                                    <p:rowEditor/>
+                                </p:column>
+
+                                <p:columnGroup type="footer">
+                                    <p:row>
+                                        <p:column footerText="Total (Bs.): " colspan="4" style="text-align:right"/>
+                                        <p:column footerText="#{FacturaTramCertController.monto()}" style="text-align:right"/>
+                                        <p:column footerText=""/>
+                                    </p:row>
+                                </p:columnGroup>
+
+
+                                <f:facet name="footer">
+                                    <p:commandButton value="Añadir" icon="ui-icon-plus" actionListener="#{FacturaTramCertController.toSeleccionarPagos()}" />
+                                    <p:commandButton value="Eliminar" icon="ui-icon-minus" actionListener="#{FacturaTramCertController.eliminarDetalle()}" oncomplete="updateDetalle()"/>  
+                                    <p:commandButton value="Limpiar" icon="ui-icon-trash" actionListener="#{FacturaTramCertController.limpiarDetalle()}" oncomplete="updateDetalle()"/>
+                                </f:facet>  
+
+                            </p:dataTable>
+                        </p:panel>
+
+                        <p:panel header="Cliente">
+                            <h:panelGrid columns="2">
+                                <p:outputLabel for="cliente" value="NIT/CI:"/>
+                                <p:selectOneMenu id="cliente" value="#{FacturaTramCertController.seleccionCliente}" converter="#{ClienteConverter}"> 
+                                    <f:selectItems value="#{FacturaTramCertController.listaClientes}" var="cliente" itemLabel="#{cliente.toString()}" itemValue="#{cliente}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Añadir" icon="ui-icon-plus" process="@this" actionListener="#{FacturaTramCertController.toNuevoCliente()}"/>                              
+                            </h:panelGrid>
+                        </p:panel>
+
+                        <p:panel header="Cobro">
+                            <h:panelGrid columns="4">
+                                <p:outputLabel for="efectivo" value="Efectivo (Bs.):"/> 
+                                <p:inputText id="efectivo" value="#{FacturaTramCertController.efectivo}" size="10">
+                                    <p:ajax event="keyup" update="cambio" listener="#{FacturaTramCertController.actualizarCambio}" />
+                                </p:inputText>
+
+                                <p:outputLabel for="cambio" value="Cambio (Bs.):"/> 
+                                <p:inputText id="cambio" value="#{FacturaTramCertController.cambio}" readonly="true" size="10"/>
+                            </h:panelGrid>
+                        </p:panel>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton id="aceptar" value="Aceptar" icon="ui-icon-check" actionListener="#{FacturaTramCertController.nuevaFacturaTramCert()}" update=":facturacomputarizada panel"/>
+                            <p:commandButton value="Limpiar" icon="ui-icon-trash" update="panel" process="@this" actionListener="#{FacturaTramCertController.limpiar()}"/>
+                        </h:panelGrid>
+                    </p:panel>
+
+                    <p:blockUI block="panel" trigger="aceptar"/>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="dlg">
+                <p:dialog id="facturacomputarizada" header="Factura Computarizada" widgetVar="dlg" closable="false" resizable="false" modal="true" width="400px" height="600px">
+                    <object type="application/pdf" data="#{root}/reportes/FacturaTramCert?pfdrid_c=true" width="100%" height="565px">
+                        Su navegador no puede mostrar pdf, <a href="#{root}/reportes/FacturaTramCert">click</a> para descargar el pdf.
+                    </object>
+                    <h:form>
+                        <p:commandButton value="Finalizar" icon="ui-icon-cancel" process="@this" actionListener="#{FacturaTramCertController.toFacturaTramCert()}"/>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

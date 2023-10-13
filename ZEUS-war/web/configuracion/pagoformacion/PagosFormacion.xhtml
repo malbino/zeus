@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="../../resources/templates/ui.xhtml">
+
+            <ui:define name="center">
+                <h:form id="form"> 
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                    
+                    <p:panel>
+                        <f:facet name="header"> 
+                            <h:outputText style="font-size: medium" value="Pagos Formación"/> 
+                        </f:facet>
+
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+
+                        <p:dataTable id="pagosformacion" var="pagoformacion" value="#{PagoFormacionController.listaPagoFormacion()}" emptyMessage="Ningún registro encontrado." tableStyle="width:auto; min-width:100%" >
+
+                            <p:column headerText="Código" >  
+                                #{pagoformacion.codigo}  
+                            </p:column>
+
+                            <p:column headerText="Nombre" >  
+                                #{pagoformacion.concepto}  
+                            </p:column>
+
+                            <p:column headerText="Monto (Bs.)" >  
+                                #{pagoformacion.monto}  
+                            </p:column>
+
+                            <p:column> 
+                                <h:panelGroup id="group" >
+                                    <p:commandButton id="editar" process="@this" icon="ui-icon-pencil" title="Editar">  
+                                        <f:setPropertyActionListener value="#{pagoformacion}" target="#{PagoFormacionController.seleccionPagoFormacion}" />
+                                        <f:actionListener binding="#{PagoFormacionController.toEditarPagoFormacion()}" />
+                                    </p:commandButton>
+                                    
+                                    <p:commandButton id="eliminar" process="@this" icon="ui-icon-close" title="Eliminar">  
+                                        <f:setPropertyActionListener value="#{pagoformacion}" target="#{PagoFormacionController.seleccionPagoFormacion}" />
+                                        <f:actionListener binding="#{PagoFormacionController.eliminarPagoFormacion()}" />
+                                        
+                                        <p:confirm header="Confirmacion" message="Esta seguro?" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                </h:panelGroup>
+
+                            </p:column>
+
+
+                            <f:facet name="footer">
+                                <p:commandButton id="botonNuevo" value="Nuevo" icon="ui-icon-document" actionListener="#{PagoFormacionController.toNuevoPagoFormacion()}"/>  
+                            </f:facet>  
+
+                        </p:dataTable>  
+                    </p:panel>
+
+
+
+                </h:form> 
+
+
+
+            </ui:define>
+
+
+        </ui:composition>
+
+    </body>
+</html>

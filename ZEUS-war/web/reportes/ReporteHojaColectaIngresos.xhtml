@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="../resources/templates/ui.xhtml">
+            <ui:define name="center">
+                <h:outputScript library="js" name="calendar_es.js" />
+
+                <h:form>
+                    <p:panel>
+                        <f:facet name="header">  
+                            <h:outputText style="font-size: medium" value="Reporte Hoja de Colecta/Ingresos"/> 
+                        </f:facet>
+
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+                        <h:panelGrid id="panelGrid" columns="2">
+                            <p:outputLabel for="campus" value="Campus:"/>
+                            <p:selectOneMenu id="campus" value="#{ReporteHojaColectaIngresosController.seleccionCampus}" converter="#{CampusConverter}" required="true" requiredMessage="* Campus requerido."> 
+                                <f:selectItem itemLabel="Seleccione el Campus..." itemValue="" />
+                                <f:selectItems value="#{ReporteHojaColectaIngresosController.listaCampus()}" var="campus" itemLabel="#{campus.toString()}" itemValue="#{campus}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel for="desde" value="Desde:"/>
+                            <p:calendar id="desde" value="#{ReporteHojaColectaIngresosController.desde}" locale="es" pattern="dd/MM/yyyy" mask="true" showButtonPanel="true" navigator="true" required="true" requiredMessage="* Desde requerido."/> 
+                            
+                            <p:outputLabel for="hasta" value="Hasta:"/>
+                            <p:calendar id="hasta" value="#{ReporteHojaColectaIngresosController.hasta}" locale="es" pattern="dd/MM/yyyy" mask="true" showButtonPanel="true" navigator="true" required="true" requiredMessage="* Hasta requerido."/> 
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Generar" icon="ui-icon-check" actionListener="#{ReporteHojaColectaIngresosController.generarReporte()}" update="panelGrid"/>
+                        </h:panelGrid>
+                    </p:panel>  
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

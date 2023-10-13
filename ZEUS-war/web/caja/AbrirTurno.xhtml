@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="../resources/templates/ui.xhtml">
+            <ui:define name="center">
+                <h:form>
+                    <p:panel>
+                        <f:facet name="header"> 
+                            <h:outputText style="font-size: medium" value="Abrir Turno"/> 
+                        </f:facet>
+
+                        <p:messages id="messages" autoUpdate="true" closable="true"/>
+
+                        <h:panelGrid id="panelGrid" columns="2">  
+                            <p:outputLabel for="campus" value="Campus:"/>
+                            <p:selectOneMenu id="campus" value="#{AbrirTurnoController.seleccionCampus}" converter="#{CampusConverter}" required="true" requiredMessage="* Campus requerido."> 
+                                <f:selectItem itemLabel="Seleccione el Campus..." itemValue="" />
+                                <f:selectItems value="#{AbrirTurnoController.listaCampus()}" var="campus" itemLabel="#{campus.toString()}" itemValue="#{campus}"/>
+                                <p:ajax update="cajas"/>
+                            </p:selectOneMenu> 
+
+                            <p:outputLabel for="cajas" value="Caja:"/>
+                            <p:selectOneMenu id="cajas" value="#{AbrirTurnoController.seleccionCaja}" converter="#{CajaConverter}" required="true" requiredMessage="* Caja requerida."> 
+                                <f:selectItem itemLabel="Seleccione la Caja..." itemValue="" />
+                                <f:selectItems value="#{AbrirTurnoController.listaCajas()}" var="caja" itemLabel="#{caja.toString()}" itemValue="#{caja}"/>
+                            </p:selectOneMenu> 
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Aceptar" icon="ui-icon-check" actionListener="#{AbrirTurnoController.crearTurnoCaja()}" update="panelGrid"/>
+                            <p:commandButton value="Cancelar" icon="ui-icon-cancel" process="@this"  actionListener="#{AbrirTurnoController.toHome()}"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

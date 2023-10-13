@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="../resources/templates/ui.xhtml">
+            <ui:define name="center">
+                <h:outputScript library="js" name="calendar_es.js" />
+                
+                <h:form>
+                    <p:panel>
+                        <f:facet name="header"> 
+                            <h:outputText style="font-size: medium" value="Generador Código de Control"/> 
+                        </f:facet>
+
+                        <h:panelGrid>
+                            <p:messages id="messages" autoUpdate="true" closable="true" />
+                        </h:panelGrid>
+
+                        <h:panelGrid id="panelGrid" columns="2" >
+                            <p:outputLabel for="numeroAutorizacion" value="Número de autorización:"/> 
+                            <p:inputText id="numeroAutorizacion" value="#{GeneradorCodigoControlController.numeroAutorizacion}" size="100" required="true" requiredMessage="* Número de autorización requerido."/>
+
+                            <p:outputLabel for="numeroFactura" value="Número de factura:"/> 
+                            <p:inputText id="numeroFactura" value="#{GeneradorCodigoControlController.numeroFactura}" size="100" required="true" requiredMessage="* Número de factura requerida."/>
+
+                            <p:outputLabel for="nitCiCliente" value="NIT/CI cliente:"/> 
+                            <p:inputText id="nitCiCliente" value="#{GeneradorCodigoControlController.nitCiCliente}" size="100" required="true" requiredMessage="* NIT/CI cliente requerido."/>
+
+                            <p:outputLabel for="fecha" value="Fecha:"/>
+                            <p:calendar id="fecha" value="#{GeneradorCodigoControlController.fecha}" locale="es" pattern="dd/MM/yyyy" mask="true" showButtonPanel="true" navigator="true" size="100" required="true" requiredMessage="* Fecha requerida."/>
+
+                            <p:outputLabel for="totalFactura" value="Total factura:"/> 
+                            <p:inputText id="totalFactura" value="#{GeneradorCodigoControlController.totalFactura}" size="100" required="true" requiredMessage="* Total factura requerido."/>
+
+                            <p:outputLabel for="llaveDosificacion" value="Llave de dosificación:"/> 
+                            <p:inputText id="llaveDosificacion" value="#{GeneradorCodigoControlController.llaveDosificacion}" size="100" required="true" requiredMessage="* Llave de dosificación requerida."/>
+
+                            <h:outputText value="Codigo de control:"/> 
+                            <p:inputText value="#{GeneradorCodigoControlController.codigoControl}" readonly="true" style="font-size: large; font-weight: bold"/>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Aceptar" icon="ui-icon-check" actionListener="#{GeneradorCodigoControlController.generar()}" update="panelGrid"/>
+                            <p:commandButton value="Limpiar" icon="ui-icon-trash" process="@this" actionListener="#{GeneradorCodigoControlController.limpiar()}" update="panelGrid"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

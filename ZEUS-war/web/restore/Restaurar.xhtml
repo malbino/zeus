@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="../resources/templates/restore.xhtml">
+
+            <ui:define name="center">
+                <h:form id="form">
+                    <h:panelGrid id="panelGrid" columns="1">
+                        <h:outputText style="font-size: large" value="Restaurar contraseña"/>
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+                        <h:outputText value="Para restaurar su contraseña introduzca el numero PIN. ZEUS le enviara su nueva contraseña a su correo"/>
+
+                        <p:outputLabel for="pin" value="PIN"/>
+                        <p:inputText id="pin" value="#{RestoreController.pin_usuario}" size="30" required="true" requiredMessage="PIN requerido."/>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton id="enviar" value="Enviar" icon="ui-icon-mail-closed" update="panelGrid" actionListener="#{RestoreController.restaurar()}"/>
+                            <p:commandButton value="Cancelar" icon="ui-icon-cancel" process="@this"  actionListener="#{RestoreController.toIndex()}"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+
+                    <p:blockUI block="panelGrid" trigger="enviar">
+                        Espere por favor...<br />
+                        <p:graphicImage value="/resources/images/ajaxloadingbar.gif" />
+                    </p:blockUI>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

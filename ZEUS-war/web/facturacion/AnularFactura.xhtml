@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="../resources/templates/ui.xhtml">
+
+            <ui:define name="center">
+                <h:form id="form">
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+
+                    <p:panel>
+                        <f:facet name="header"> 
+                            <h:outputText style="font-size: medium" value="Anular Factura"/> 
+                        </f:facet>
+
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+                        <h:panelGrid columns="3">
+                            <p:outputLabel for="numero" value="Número:"/>
+                            <p:inputText id="numero" value="#{AnularFacturaController.numero}"/>
+                            <p:commandButton value="Buscar" icon="ui-icon-search" update="facturas"/>  
+                        </h:panelGrid>  
+
+                        <p:dataTable id="facturas" var="factura" value="#{AnularFacturaController.buscarFacturas()}" emptyMessage="Ningún registro encontrado."  
+                                     tableStyle="width:auto; min-width:100%" >
+                            <p:column headerText="Número">
+                                <h:outputText value="#{factura.numero}" />
+                            </p:column>
+                            <p:column headerText="Fecha">
+                                <h:outputText value="#{factura.fecha_ddMMyyyHHmm}" />
+                            </p:column>
+                            <p:column headerText="Cliente">
+                                <h:outputText value="#{factura.cliente.nombre_razonsocial}" />
+                            </p:column>
+                            <p:column headerText="NIT/CI">
+                                <h:outputText value="#{factura.cliente.nit_ci}" />
+                            </p:column>
+                            <p:column headerText="Monto">
+                                <h:outputText value="#{factura.monto}" />
+                            </p:column>
+                            <p:column headerText="Código de Control">
+                                <h:outputText value="#{factura.codigo_control}" />
+                            </p:column>
+                            <p:column headerText="Condición">
+                                <h:outputText value="#{factura.condicion}" />
+                            </p:column>
+
+                            <p:column style="width:32px;text-align: center">
+                                <p:commandButton icon="ui-icon-close" title="Anular" update="facturas">
+                                    <f:setPropertyActionListener value="#{factura}" target="#{AnularFacturaController.seleccionFactura}"/>
+                                    <f:actionListener binding="#{AnularFacturaController.anularFactura()}"/>
+
+                                    <p:confirm header="Confirmacion" message="Esta seguro?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form> 
+
+
+
+            </ui:define>
+
+
+        </ui:composition>
+
+    </body>
+</html>

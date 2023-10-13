@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="../../resources/templates/ui.xhtml">
+            <ui:define name="center">
+                <h:form id="editarUsuario">
+                    <p:panel id="panel">
+                        <f:facet name="header"> 
+                            <h:outputText style="font-size: medium" value="Editar Usuario"/> 
+                        </f:facet>
+
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+                        <h:panelGrid id="panelGrid" columns="2">
+                            <p:outputLabel for="usuario" value="Usuario:"/> 
+                            <p:inputText id="usuario" value="#{UsuarioController.seleccionUsuario.usuario}" required="true" requiredMessage="* Usuario requerido." size="30"/>
+                            
+                            <h:outputText value="Restaurar contraseña:" />
+                            <p:selectBooleanButton value="#{UsuarioController.restaurar_contrasena}" onLabel="Sí" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-cancel" style="width:60px"/>
+
+                            <h:outputLabel for="roles" value="Cuentas:"/>
+                            <p:selectCheckboxMenu id="roles" value="#{UsuarioController.seleccionUsuario.roles}" converter="#{RolConverter}" label="Roles" filter="true" filterMatchMode="contains" style="vertical-align: middle">  
+                                <f:selectItems value="#{UsuarioController.listaRoles()}"/>  
+                            </p:selectCheckboxMenu>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2" >
+                            <p:commandButton id="aceptar" value="Aceptar" icon="ui-icon-check" actionListener="#{UsuarioController.editarUsuario()}" update="panelGrid"/>
+                            <p:commandButton value="Cancelar" icon="ui-icon-cancel" process="@this"  actionListener="#{UsuarioController.toUsuarios()}"/>
+                        </h:panelGrid>                       
+                    </p:panel>
+                    
+                    <p:blockUI block="panel" trigger="aceptar">
+                        Espere por favor...<br />
+                        <p:graphicImage value="/resources/images/ajaxloadingbar.gif" />
+                    </p:blockUI>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

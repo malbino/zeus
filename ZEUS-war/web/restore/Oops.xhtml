@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <body>
+
+        <ui:composition template="../resources/templates/restore.xhtml">
+            <ui:define name="center">
+                <h:form id="form">
+                    <h:panelGrid columns="1">
+                        <h:outputText style="font-size: large" value="Oops!"/>
+                        
+                        <h:outputText value="Para restaurar su contraseña debe apersonarse por oficinas del Area de Informatica de la institución."/>
+
+                        <p:commandButton value="Terminar" actionListener="#{RestoreController.toIndex()}"/>
+                    </h:panelGrid>
+                </h:form> 
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <body>
+        <ui:composition template="../../resources/templates/ui.xhtml">
+            <ui:define name="center">
+                <h:form>
+                    <p:panel header="Seleccionar Pagos">
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="monto_abonar" value="Monto Abonar (Bs.):"/> 
+                            <p:inputText id="monto_abonar" value="#{FacturaCapacitacionController.montoAbonar}" required="true" requiredMessage="* Monto Abonar requerido." size="30"/>
+                        </h:panelGrid>
+
+                        <p:dataTable id="pagos" var="pago" value="#{FacturaCapacitacionController.listaPagos()}" emptyMessage="Ningún registro encontrado."  tableStyle="width:auto; min-width:100%">
+                            <p:column headerText="Código">
+                                #{pago.codigo}
+                            </p:column>
+                            <p:column headerText="Concepto">
+                                #{pago.concepto}
+                            </p:column>
+
+                            <p:column headerText="Monto (Bs.)">
+                                <h:outputText value="#{pago.monto}" style="float: right"/>
+                            </p:column>
+
+                            <p:column headerText="Pagado (Bs.)">
+                                <h:outputText value="#{pago.pagado}" style="float: right"/>
+                            </p:column>
+
+                            <p:column headerText="Adeudado (Bs.)">
+                                <h:outputText value="#{pago.adeudado}" style="float: right"/>
+                            </p:column>
+
+                            <p:column headerText="Condición">
+                                #{pago.condicion}
+                            </p:column>
+
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column footerText="Total (Bs.): " colspan="4" style="text-align:right"/>
+                                    <p:column footerText="#{FacturaCapacitacionController.montoPagos()}" style="text-align:right"/>
+                                    <p:column footerText=""/>
+                                </p:row>
+                            </p:columnGroup>
+                        </p:dataTable>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Aceptar" icon="ui-icon-check" actionListener="#{FacturaCapacitacionController.añadirPagos()}"/>
+                            <p:commandButton value="Cancelar" icon="ui-icon-cancel" process="@this"  actionListener="#{FacturaCapacitacionController.toFacturaCapacitacion()}"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

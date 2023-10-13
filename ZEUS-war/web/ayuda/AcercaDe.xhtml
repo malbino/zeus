@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="../resources/templates/ui.xhtml">
+            <ui:define name="center">
+                <h:panelGrid>
+                    <p:graphicImage value="/resources/images/LOGO-HORIZONTAL.png" width="300"/>
+                    
+                    <h:outputText value="ZEUS subsede Oruro" style="font-size: x-large; font-weight: bold"/>
+                    <p:spacer/>
+                    <h:outputText value="Versión: " style="font-weight: bold"/>
+                    <h:outputText value="1.2.0"/>
+                    <h:outputText value="Diseño y desarrollo:" style="font-weight: bold"/>
+                    <h:outputText value="Ing. Martin Albino Ascui"/>
+                    <p:spacer/>
+                    <h:outputText value="Copyright © 2021, Fundación Infocal Cochabamba. Todos los derechos reservados"/>
+                </h:panelGrid>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
